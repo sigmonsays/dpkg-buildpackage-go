@@ -1,12 +1,4 @@
 #!/bin/sh
-export DEBIAN_FRONTEND=noninteractive
-export DEBCONF_NONINTERACTIVE_SEEN=true
-cat <<EOF | debconf-set-selections
-tzdata	tzdata/Areas select	America
-tzdata	tzdata/Zones/America	select	Los_Angeles
-tzdata	tzdata/Zones/Etc	select	UTC
-tzdata	tzdata/Zones/US	select
-EOF
 
 set -e
 # Set the install command to be used by mk-build-deps (use --yes for non-interactive)
