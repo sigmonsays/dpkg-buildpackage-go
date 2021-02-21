@@ -6,5 +6,5 @@ RUN bash /init.sh
 env DEBIAN_FRONTEND=noninteractive
 env DEBCONF_NONINTERACTIVE_SEEN=true
 RUN apt-get update
-RUN apt-get install build-essential debhelper devscripts -y
+RUN apt-get install build-essential debhelper devscripts equivs -y
 ENTRYPOINT ["/entrypoint.sh"]
