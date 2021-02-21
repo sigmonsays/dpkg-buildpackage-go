@@ -5,6 +5,13 @@ set -e
 install_tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes"
 # Install build dependencies automatically
 mk-build-deps --install --tool="${install_tool}" debian/control
+
+
+# Install go
+# https://golang.org/dl/go1.16.linux-amd64.tar.gz
+curl -L https://golang.org/dl/go1.16.linux-amd64.tar.gz | tar -C /usr/local -xzf -
+export PATH=$PATH:/usr/local/go/bin
+
 # Build the package
 dpkg-buildpackage $@
 # Output the filename
