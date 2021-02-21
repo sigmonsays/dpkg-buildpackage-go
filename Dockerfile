@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:20.04
 LABEL maintainer="Sigmonsays <noreply@example.com>"
 COPY entrypoint.sh /entrypoint.sh
 RUN apt-get update
