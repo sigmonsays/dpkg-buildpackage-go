@@ -39,14 +39,15 @@ dpkg-buildpackage $@
 cd ..
 
 # Trash the build deps
-rm -vf ${pkg_name}*-build-deps_*.deb
+ls -l *.deb
+rm -vf *build-deps*.deb
 
-filename=`ls *.deb | grep -v -- -dbgsym`
+filename=`ls *.deb | grep -v -- -dbgsym | grep -v -- build-deps `
 dbgsym=`ls *.deb | grep -- -dbgsym`
 echo ::set-output name=filename::$filename
-echo ::set-output name=filename-dbgsym::$dbgsym
+#echo ::set-output name=filename-dbgsym::$dbgsym
 
 # Move the built package into the Docker mounted workspace
-mv -v $filename $dbgsym workspace/
+mv -v $filename workspace/
 
 exit 0
