@@ -1,8 +1,13 @@
 #!/bin/sh
 
+git fetch --prune --unshallow
+function _git_ver {
+    git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
+}
+
 # Bump version
 pkg_name="$(awk '/Package:/ {print $2}' debian/control)"
-git_ver="$(git describe --tags)"
+git_ver="$(_git_ver)"
 cat <<EOF > debian/changelog
 $pkg_name ($git_ver) UNRELEASED; urgency=medium
 
