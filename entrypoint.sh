@@ -1,6 +1,7 @@
 #!/bin/bash
 
-git fetch --prune --unshallow
+git fetch --prune --unshallow 2>/dev/null
+
 function _git_ver {
     #git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
     git describe --tags | tr -d a-z
@@ -42,12 +43,10 @@ cd ..
 ls -l *.deb
 rm -vf *build-deps*.deb
 
-filename=`ls *.deb | grep -v -- -dbgsym | grep -v -- build-deps `
-dbgsym=`ls *.deb | grep -- -dbgsym`
+filename=`ls -1 *.deb | grep -v -- -dbgsym | grep -v -- build-deps `
+dbgsym=`ls -1 *.deb | grep -- -dbgsym`
 echo ::set-output name=filename::$filename
 #echo ::set-output name=filename-dbgsym::$dbgsym
 
-# Move the built package into the Docker mounted workspace
-mv -v $filename workspace/
 
 exit 0
