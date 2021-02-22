@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 git fetch --prune --unshallow
 function _git_ver {
