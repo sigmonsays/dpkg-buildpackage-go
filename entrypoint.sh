@@ -7,6 +7,7 @@ function _git_ver {
     git describe --tags | tr -d a-z
 }
 
+echo "dpkg-build-package-go started (rev33)"
 echo "debian package git version $(_git_ver)"
 
 # Bump version
