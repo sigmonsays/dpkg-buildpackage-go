@@ -2,7 +2,8 @@
 
 git fetch --prune --unshallow
 function _git_ver {
-    git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
+    #git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
+    git describe --tags
 }
 
 echo "debian package git version $(_git_ver)"
@@ -10,6 +11,9 @@ echo "debian package git version $(_git_ver)"
 # Bump version
 pkg_name="$(awk '/Package:/ {print $2}' debian/control)"
 git_ver="$(_git_ver)"
+
+[[ -z "$git_ver" ]] && git_ver=0.0.1
+
 cat <<EOF > debian/changelog
 $pkg_name ($git_ver) UNRELEASED; urgency=medium
 
@@ -33,13 +37,14 @@ export PATH=$PATH:/usr/local/go/bin
 dpkg-buildpackage $@
 # Output the filename
 cd ..
+
+# Trash the build deps
+rm -vf ${pkg_name}*-build-deps_*.deb
+
 filename=`ls *.deb | grep -v -- -dbgsym`
 dbgsym=`ls *.deb | grep -- -dbgsym`
 echo ::set-output name=filename::$filename
 echo ::set-output name=filename-dbgsym::$dbgsym
-
-# Trash the build deps
-rm -vf ${pkg_name}*-build-deps_*.deb
 
 # Move the built package into the Docker mounted workspace
 mv -v $filename $dbgsym workspace/
