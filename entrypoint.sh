@@ -5,6 +5,8 @@ function _git_ver {
     git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
 }
 
+echo "debian package git version $(_git_ver)"
+
 # Bump version
 pkg_name="$(awk '/Package:/ {print $2}' debian/control)"
 git_ver="$(_git_ver)"
@@ -13,14 +15,13 @@ $pkg_name ($git_ver) UNRELEASED; urgency=medium
 
   * automated release
 
- -- bot <bot@example.net>  $(date +%s)
+ -- bot <bot@example.net>  $(date -R)
 EOF
 
 # Set the install command to be used by mk-build-deps (use --yes for non-interactive)
 install_tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes"
 # Install build dependencies automatically
 mk-build-deps --install --tool="${install_tool}" debian/control
-
 
 
 # Install go
@@ -38,8 +39,7 @@ echo ::set-output name=filename::$filename
 echo ::set-output name=filename-dbgsym::$dbgsym
 
 # Trash the build deps
-rm ${pkg_name}*-build-deps_*.deb
-
+rm -vf ${pkg_name}*-build-deps_*.deb
 
 # Move the built package into the Docker mounted workspace
 mv -v $filename $dbgsym workspace/
