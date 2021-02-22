@@ -3,7 +3,7 @@
 git fetch --prune --unshallow
 function _git_ver {
     #git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
-    git describe --tags
+    git describe --tags | tr -d a-z
 }
 
 echo "debian package git version $(_git_ver)"
