@@ -40,11 +40,11 @@ dpkg-buildpackage $@
 # Output the filename
 cd ..
 
+# Trash the build deps
+rm -vf **/*build-deps*.deb
+
 ls -l **/*.deb
 cp -v *.deb $GITHUB_WORKSPACE
-
-# Trash the build deps
-rm -vf *build-deps*.deb
 
 filename=`ls -1 *.deb | grep -v -- -dbgsym | grep -v -- build-deps `
 dbgsym=`ls -1 *.deb | grep -- -dbgsym`
