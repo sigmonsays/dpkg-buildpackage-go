@@ -1,9 +1,21 @@
 #!/bin/sh
 
+# Bump version
+pkg_name="$(awk '/Package:/ {print $2}' debian/control)"
+git_ver="$(git describe --tags)"
+cat <<EOF > debian/changelog
+$pkg_name ($git_ver) UNRELEASED; urgency=medium
+
+  * automated release
+
+ -- bot <bot@example.net>  $(date +%s)
+EOF
+
 # Set the install command to be used by mk-build-deps (use --yes for non-interactive)
 install_tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes"
 # Install build dependencies automatically
 mk-build-deps --install --tool="${install_tool}" debian/control
+
 
 
 # Install go
