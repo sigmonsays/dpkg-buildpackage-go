@@ -10,6 +10,9 @@ function _git_ver {
 echo "dpkg-build-package-go started (rev33)"
 echo "debian package git version $(_git_ver)"
 
+# Hack
+git config --global --add safe.directory /github/workspace
+
 # Bump version
 pkg_name="$(awk '/Package:/ {print $2}' debian/control)"
 git_ver="$(_git_ver)"
